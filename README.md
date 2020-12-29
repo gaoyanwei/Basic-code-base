@@ -1,4 +1,4 @@
-This repository is gyw's base code base!
+This repository is gyw's basic code base!
 
 Directory instructions:
 	test: it is my test code dir!
