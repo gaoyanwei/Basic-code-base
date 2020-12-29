@@ -9,3 +9,4 @@ all:
 	@test -f $(FILE_TEST) && cp $(FILE_TEST) $(DIR_BIN_IOCTL)
 clean:
 	@make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) clean
+	@rm -rf $(FILE_TEST)
