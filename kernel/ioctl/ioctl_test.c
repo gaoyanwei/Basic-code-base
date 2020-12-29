@@ -46,11 +46,13 @@ int ioctl_test(int fd)
         return 0;
     }
     printf("CSDN_IOC_WR result: %c\n", buf);
+
+	return 0;
 }
 
 int main(int argc,char * argv[]){
 
-	int i = 0;
+#if 0
 	char * buf = (char *)malloc(sizeof(char) * SIZEMAX);
 
 	if(argc < 2 && !argv[1]){
@@ -59,20 +61,15 @@ int main(int argc,char * argv[]){
 	}else{
 		memcpy(buf, argv[1],SIZEMAX);
 	}
-
-//	printf("argv[1]:%s\n",argv[1]);
-	int fd = open(buf,O_RDWR);
+#endif
+	int fd = open(PATH,O_RDWR);
 	printf("fd:%d\n",fd);
 
 	printf("pid:%d\n",getpid());
+
 	if(fd <= 0)
 		printf("open is failed\n");
-#if 0
-	while(i < TEST_COUNT){
-		i++;
-		test_read(fd,buf);
-	}
-#endif	
+
 	ioctl_test(fd);
 	close(fd);
 	return 0;
