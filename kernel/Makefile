@@ -4,6 +4,7 @@ DIR_FTRACE:=$(DIR_KERNEL)/ftrace
 DIR_PROC:=$(DIR_KERNEL)/proc
 DIR_KPRBOES:=$(DIR_KERNEL)/kprboes
 DIR_RBTREE:=$(DIR_KERNEL)/rbtree
+DIR_HLIST:=$(DIR_KERNEL)/hlist
 
 help:
 	@echo "****************************"
@@ -40,6 +41,11 @@ rbtree:
 	@cd $(DIR_RBTREE) && make		2>&1	> $(FILE_LOG)
 	@echo "build rbtree driver end..."
 
+hlist:
+	@echo "build hlist driver start..."
+	@cd $(DIR_HLIST) && make		2>&1	> $(FILE_LOG)
+	@echo "build hlist driver end..."
+
 clean:
 	@echo "kernel clean start ..."
 	@cd $(DIR_IOCTL)	&& make clean
@@ -47,6 +53,7 @@ clean:
 	@cd $(DIR_PROC)	&& make clean
 	@cd $(DIR_KPRBOES)	&& make clean
 	@cd $(DIR_RBTREE)	&& make clean
+	@cd $(DIR_HLIST)	&& make clean
 	@echo "kernel clean end..."
 
-.PHONY:ioctl ftrace clean proc kprboes rbtree
+.PHONY:ioctl ftrace clean proc kprboes rbtree hlist
