@@ -3,6 +3,7 @@ DIR_IOCTL:=$(DIR_KERNEL)/ioctl
 DIR_FTRACE:=$(DIR_KERNEL)/ftrace
 DIR_PROC:=$(DIR_KERNEL)/proc
 DIR_KPRBOES:=$(DIR_KERNEL)/kprboes
+DIR_RBTREE:=$(DIR_KERNEL)/rbtree
 
 help:
 	@echo "****************************"
@@ -11,6 +12,7 @@ help:
 	@echo "* make ftrace"
 	@echo "* make proc"
 	@echo "* make kprboes"
+	@echo "* make rbtree"
 	@echo "****************************"
 
 ioctl:
@@ -33,12 +35,18 @@ kprboes:
 	@cd $(DIR_KPRBOES) && make		2>&1	> $(FILE_LOG)
 	@echo "build proc driver end..."
 
+rbtree:
+	@echo "build rbtree driver start..."
+	@cd $(DIR_RBTREE) && make		2>&1	> $(FILE_LOG)
+	@echo "build rbtree driver end..."
+
 clean:
 	@echo "kernel clean start ..."
 	@cd $(DIR_IOCTL)	&& make clean
 	@cd $(DIR_FTRACE)	&& make clean
 	@cd $(DIR_PROC)	&& make clean
 	@cd $(DIR_KPRBOES)	&& make clean
+	@cd $(DIR_RBTREE)	&& make clean
 	@echo "kernel clean end..."
 
-.PHONY:ioctl ftrace clean proc kprboes
+.PHONY:ioctl ftrace clean proc kprboes rbtree
