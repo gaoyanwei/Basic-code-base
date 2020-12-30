@@ -2,6 +2,7 @@
 DIR_IOCTL:=$(DIR_KERNEL)/ioctl
 DIR_FTRACE:=$(DIR_KERNEL)/ftrace
 DIR_PROC:=$(DIR_KERNEL)/proc
+DIR_KPRBOES:=$(DIR_KERNEL)/kprboes
 
 help:
 	@echo "****************************"
@@ -9,6 +10,7 @@ help:
 	@echo "* make ioctl"
 	@echo "* make ftrace"
 	@echo "* make proc"
+	@echo "* make kprboes"
 	@echo "****************************"
 
 ioctl:
@@ -26,11 +28,17 @@ proc:
 	@cd $(DIR_PROC) && make		2>&1	> $(FILE_LOG)
 	@echo "build proc driver end..."
 
+kprboes:
+	@echo "build proc driver start..."
+	@cd $(DIR_KPRBOES) && make		2>&1	> $(FILE_LOG)
+	@echo "build proc driver end..."
+
 clean:
 	@echo "kernel clean start ..."
 	@cd $(DIR_IOCTL)	&& make clean
 	@cd $(DIR_FTRACE)	&& make clean
 	@cd $(DIR_PROC)	&& make clean
+	@cd $(DIR_KPRBOES)	&& make clean
 	@echo "kernel clean end..."
 
-.PHONY:ioctl ftrace clean proc
+.PHONY:ioctl ftrace clean proc kprboes
