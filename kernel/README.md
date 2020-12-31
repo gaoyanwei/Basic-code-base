@@ -7,6 +7,7 @@ Directory instructions:
 	kprboes: it is my hook kprboes driver! (kernel: 3.0.1)
 	rbtree: it is my user rbtree driver! (kernel: 3.0.1)
 	hlist: it is my user hlist driver! (kernel: 3.0.1)
+	hook_syscall_table: it is my hook syscall table driver! (kernel: 3.0.1)
 	...
 
 

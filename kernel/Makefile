@@ -5,6 +5,7 @@ DIR_PROC:=$(DIR_KERNEL)/proc
 DIR_KPRBOES:=$(DIR_KERNEL)/kprboes
 DIR_RBTREE:=$(DIR_KERNEL)/rbtree
 DIR_HLIST:=$(DIR_KERNEL)/hlist
+DIR_HOOK_SYSCALL_TABLE:=$(DIR_KERNEL)/hook_syscall_table
 
 help:
 	@echo "****************************"
@@ -46,6 +47,11 @@ hlist:
 	@cd $(DIR_HLIST) && make		2>&1	> $(FILE_LOG)
 	@echo "build hlist driver end..."
 
+hook_syscall_table:
+	@echo "build hlist driver start..."
+	@cd $(DIR_HOOK_SYSCALL_TABLE) && make		2>&1	> $(FILE_LOG)
+	@echo "build hlist driver end..."
+
 clean:
 	@echo "kernel clean start ..."
 	@cd $(DIR_IOCTL)	&& make clean
@@ -54,6 +60,7 @@ clean:
 	@cd $(DIR_KPRBOES)	&& make clean
 	@cd $(DIR_RBTREE)	&& make clean
 	@cd $(DIR_HLIST)	&& make clean
+	@cd $(DIR_HOOK_SYSCALL_TABLE)	&& make clean
 	@echo "kernel clean end..."
 
-.PHONY:ioctl ftrace clean proc kprboes rbtree hlist
+.PHONY:ioctl ftrace clean proc kprboes rbtree hlist hook_syscall_table
