@@ -17,6 +17,7 @@
 #include <linux/delay.h>
 #include <linux/ioctl.h>
 #include <linux/uaccess.h>
+#include <linux/kallsyms.h>
 
 #include "test.h"
 
@@ -157,6 +158,10 @@ static int __init test_init(void){
 	int result = 0;
 	dsn = 3;
 	acount_of_devices = 1;
+
+	unsigned long addr = (unsigned long)kallsyms_lookup_name("kallsyms_lookup_name");
+
+	printk("addr %#x \n",addr);
 
 	result = alloc_chrdev_region(&dev, dsn, acount_of_devices, DeviceName);
 	if(result < 0)

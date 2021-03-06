@@ -27,6 +27,13 @@ typedef struct ftrace_demo_hook{
 
 asmlinkage long (*real_sys_mkdirat)(int dfd, const char __user * pathname, umode_t mode);
 
+int (*open_ioctl_fn)(struct inode * inode,struct file * filp);
+int fn_open_ioctl(struct inode * inode,struct file * filp)
+{
+	printk("Gyw: %s %d\n",__func__,__LINE__);
+	return 0;
+}
+
 long fh_sys_mkdirat(int dfd, const char __user * pathname, umode_t mode)
 {
 	int ret = -13;
@@ -34,7 +41,7 @@ long fh_sys_mkdirat(int dfd, const char __user * pathname, umode_t mode)
 	char * buf = (char *)kmalloc(1024,GFP_KERNEL);
 	memset(buf,0,1024);
 
-	if(pathname){
+	if(pathname && pathname == 0x00000000294483a8){
 		copy_from_user(buf,pathname,1024);
 		printk("%s pathname: %s ret: %d\n",__func__,buf,ret);
 	}
@@ -43,12 +50,13 @@ long fh_sys_mkdirat(int dfd, const char __user * pathname, umode_t mode)
 #endif
 	ret = real_sys_mkdirat(dfd,pathname, mode);
 
-	printk("%s\n",__func__);
+	printk("%s %p\n",__func__,pathname);
 	return ret;
 }
 
 static demo_hook hook_ops[]	= {
 	F_HOOK("__x64_sys_mkdir",fh_sys_mkdirat, &real_sys_mkdirat),
+	F_HOOK("open_test",fn_open_ioctl,&open_ioctl_fn),
 };
 
 static int resolve_hook_address(demo_hook * hook)
