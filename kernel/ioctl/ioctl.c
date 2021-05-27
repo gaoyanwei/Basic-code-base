@@ -91,19 +91,20 @@ long test_ioctl (struct file *filp, unsigned int cmd, unsigned long arg)
 
 	/* 根据命令类型，检测参数空间是否可以访问 */
 	/* access_ok返回值为1(成功)或0(失败) */
-#if 0
+#if 1
 	if (_IOC_DIR(cmd) & _IOC_READ){
 		retval = access_ok(VERIFY_WRITE, (void __user *)arg, _IOC_SIZE(cmd));
 	}else if (_IOC_DIR(cmd) & _IOC_WRITE){
 		retval = access_ok(VERIFY_READ, (void __user *)arg, _IOC_SIZE(cmd));
 	}
-#endif
+#else
 	if (_IOC_DIR(cmd) & _IOC_READ){
 		retval = access_ok((void __user *)arg, _IOC_SIZE(cmd));
 	}else if (_IOC_DIR(cmd) & _IOC_WRITE){
 		retval = access_ok((void __user *)arg, _IOC_SIZE(cmd));
 	}
 
+#endif
 	if (!retval)
 		return -EFAULT;
 
@@ -227,6 +228,7 @@ static void __exit test_exit(void){
 	device_destroy(D_class,dev);
 	class_destroy(D_class);
 	cdev_del(&test_cdev);
+	unregister_chrdev_region(dev,acount_of_devices);
 	printk("test exit...\n");
 	return;
 }
