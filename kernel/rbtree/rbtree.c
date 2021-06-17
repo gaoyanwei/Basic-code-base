@@ -21,14 +21,14 @@ static void demo_rbroot_init(struct rb_root * root)
 /* 将节点插入红黑树 */
 int demo_rbtree_insert(struct rb_root *root, rbtree_data_t *data)
 {
-    struct rb_node **tmp = &(root->rb_node), *parent = NULL; 
+	struct rb_node **tmp = &(root->rb_node), *parent = NULL; 
 	rbtree_data_t * this;
 
 	if(!root)
 		return -EINVAL;
 
-    /* Figure out where to put new node */
-    while (*tmp) {
+	/* Figure out where to put new node */
+	while (*tmp) {
 		/* 取存放红黑树的结构体 */
 		this = container_of(*tmp, rbtree_data_t, data_node);
 		/* 存放父节点 */
@@ -40,27 +40,27 @@ int demo_rbtree_insert(struct rb_root *root, rbtree_data_t *data)
 		else if (data->num > this->num)
 			tmp = &((*tmp)->rb_right);
 		else
-		/* 数据相等，数据节点已存在 */
+			/* 数据相等，数据节点已存在 */
 			return -EEXIST;
-    }
-    /* Add new node and rebalance tree. */
+	}
+	/* Add new node and rebalance tree. */
 	/* 初始化节点 data的红黑树节点，parent父节点，tmp父节点的子节点*/
-    rb_link_node(&data->data_node, parent, tmp);
+	rb_link_node(&data->data_node, parent, tmp);
 	/* 将节点插入root中 */
-    rb_insert_color(&data->data_node, root);
-    return 0;
+	rb_insert_color(&data->data_node, root);
+	return 0;
 }
 
 /* 查找对应值得红黑树节点 */
 rbtree_data_t * demo_rbtree_search(struct rb_root *root, int num)
 {
-    struct rb_node *node = root->rb_node;
+	struct rb_node *node = root->rb_node;
 	rbtree_data_t * data = NULL;
 
 	if(!root)
 		return NULL;
 
-    while (node) {
+	while (node) {
 		/* 从红黑树中查找到对应子节点 */
 		data = container_of(node, rbtree_data_t, data_node);
 		if (num < data->num)
@@ -69,27 +69,26 @@ rbtree_data_t * demo_rbtree_search(struct rb_root *root, int num)
 			node = node->rb_right;
 		else
 			return data;
-    }
-    return NULL;
+	}
+	return NULL;
 }
 
 /* 遍历红黑树 查找到对应节点删除 */
 int demo_rbtree_delete(struct rb_root *root, int num)
 {
-
-    rbtree_data_t * data = demo_rbtree_search(root, num);
-
 	if(!root)
 		return -EINVAL;
 
-    if (!data) {
+	rbtree_data_t * data = demo_rbtree_search(root, num);
+
+	if (!data) {
 		printk(KERN_ERR"not found num\n");
 		return -ENOMEM;
-    }
+	}
 
 	/* 将节点从树中删除 */
-    rb_erase(&data->data_node, root);
-    kfree(data);
+	rb_erase(&(data->data_node), root);
+	kfree(data);
 	printk(KERN_INFO"%s num = %d\n",__func__,num);
 
 	return 0;
@@ -114,23 +113,34 @@ static int demo_rbtree_add(unsigned int num)
 /* 遍历红黑树删除节点 */
 void demo_rbtree_clear(struct rb_root * root)
 {
-	struct rb_node *node;
-	rbtree_data_t * data;
+	struct rb_node *node = NULL, *next = NULL;
+	rbtree_data_t * data = NULL;
 
-	for(node = rb_first(root); node; node = rb_next(node)){
+	node = rb_first(root);
+
+	while (node) {
+
+		next = rb_next(node);
+
 		data = rb_entry(node, rbtree_data_t, data_node);
-		rb_erase(&(data->data_node),root);
-		kfree(data);
+
+		if(data){
+			rb_erase(&(data->data_node),root);
+			kfree(data);
+			data = NULL;
+		}
+
+		node = next;
 	}
 }
 
 /* 遍历打印红黑树 */
 void demo_print_rbtree(struct rb_root *tree)
 {
-    struct rb_node * node;
-    for (node = rb_first(tree); node; node = rb_next(node))
+	struct rb_node * node;
+	for (node = rb_first(tree); node; node = rb_next(node))
 		printk("%d ", rb_entry(node, rbtree_data_t , data_node)->num);
-    printk("\n");
+	printk("\n");
 }
 
 static void demo_rbtree_test(void)
@@ -160,7 +170,6 @@ static void demo_rbtree_test(void)
 
 static int demo_rbtree_init(void)
 {
-
 	demo_rbroot_init(&demo_root);
 
 	demo_rbtree_test();
